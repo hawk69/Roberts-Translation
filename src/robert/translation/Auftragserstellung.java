@@ -7,13 +7,24 @@ package robert.translation;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -21,7 +32,9 @@ import java.util.TimeZone;
  */
 public class Auftragserstellung extends javax.swing.JFrame
 {
-
+  
+  private DokumentenAnzeigeModell dokumentenAnzeigeModell=new DokumentenAnzeigeModell();
+  
   String date = null;
   int counter = 0;
 
@@ -31,8 +44,10 @@ public class Auftragserstellung extends javax.swing.JFrame
   public Auftragserstellung()
   {
     initComponents();
+    setLocationRelativeTo(null);
+    setTitle("Auftragserstellung");
     setSize(800, 800);
-
+    
     Date dt = new Date();
     // Festlegung des Formats:
     SimpleDateFormat df = new SimpleDateFormat("yyMMdd");
@@ -50,6 +65,8 @@ public class Auftragserstellung extends javax.swing.JFrame
     } catch (IOException e)
     {
     }
+    this.dokumentenAnzeigeModell=new DokumentenAnzeigeModell();
+    jTable.setModel(dokumentenAnzeigeModell);
   }
 
   @SuppressWarnings("unchecked")
@@ -113,6 +130,7 @@ public class Auftragserstellung extends javax.swing.JFrame
     pDokumente = new javax.swing.JPanel();
     jPanel1 = new javax.swing.JPanel();
     jScrollPane1 = new javax.swing.JScrollPane();
+    jTable = new javax.swing.JTable();
     jPanel2 = new javax.swing.JPanel();
     jLabel9 = new javax.swing.JLabel();
     jLabel10 = new javax.swing.JLabel();
@@ -120,6 +138,7 @@ public class Auftragserstellung extends javax.swing.JFrame
     jLabel12 = new javax.swing.JLabel();
     jLabel13 = new javax.swing.JLabel();
     lAuftragsnummer2 = new javax.swing.JLabel();
+    jButtonOpenDir = new javax.swing.JButton();
     pStunden = new javax.swing.JPanel();
     jPanel4 = new javax.swing.JPanel();
     jScrollPane3 = new javax.swing.JScrollPane();
@@ -362,12 +381,28 @@ public class Auftragserstellung extends javax.swing.JFrame
     pDokumente.setLayout(new java.awt.BorderLayout());
 
     jPanel1.setLayout(new java.awt.GridLayout(1, 0));
+
+    jTable.setModel(new javax.swing.table.DefaultTableModel(
+      new Object [][]
+      {
+        {null, null, null, null},
+        {null, null, null, null},
+        {null, null, null, null},
+        {null, null, null, null}
+      },
+      new String []
+      {
+        "Title 1", "Title 2", "Title 3", "Title 4"
+      }
+    ));
+    jScrollPane1.setViewportView(jTable);
+
     jPanel1.add(jScrollPane1);
 
     pDokumente.add(jPanel1, java.awt.BorderLayout.CENTER);
 
     jLabel9.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-    jLabel9.setText("Dokumente zum Antrag");
+    jLabel9.setText("Dokumente zum Auftrag");
 
     jLabel10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
     jLabel10.setText("Bezeichnung");
@@ -380,6 +415,15 @@ public class Auftragserstellung extends javax.swing.JFrame
 
     jLabel13.setText("Auftragsnummer:");
 
+    jButtonOpenDir.setText("Open Dir");
+    jButtonOpenDir.addActionListener(new java.awt.event.ActionListener()
+    {
+      public void actionPerformed(java.awt.event.ActionEvent evt)
+      {
+        jButtonOpenDirActionPerformed(evt);
+      }
+    });
+
     javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
     jPanel2.setLayout(jPanel2Layout);
     jPanel2Layout.setHorizontalGroup(
@@ -387,10 +431,13 @@ public class Auftragserstellung extends javax.swing.JFrame
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(jPanel2Layout.createSequentialGroup()
+            .addComponent(jLabel9)
+            .addGap(18, 18, 18)
+            .addComponent(jButtonOpenDir, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE))
+          .addGroup(jPanel2Layout.createSequentialGroup()
             .addGap(43, 43, 43)
-            .addComponent(jLabel10))
-          .addComponent(jLabel9))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 251, Short.MAX_VALUE)
+            .addComponent(jLabel10)))
+        .addGap(18, 18, 18)
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(jPanel2Layout.createSequentialGroup()
             .addComponent(jLabel12)
@@ -406,7 +453,9 @@ public class Auftragserstellung extends javax.swing.JFrame
       jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(jPanel2Layout.createSequentialGroup()
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jButtonOpenDir))
           .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(lAuftragsnummer2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -663,9 +712,82 @@ public class Auftragserstellung extends javax.swing.JFrame
 
     }//GEN-LAST:event_jTextField21ActionPerformed
 
-  /**
-   * @param args the command line arguments
-   */
+  private void jButtonOpenDirActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonOpenDirActionPerformed
+  {//GEN-HEADEREND:event_jButtonOpenDirActionPerformed
+    JFileChooser chooser = new JFileChooser();
+    
+    int returnVal = chooser.showOpenDialog(this);
+    if(returnVal == JFileChooser.APPROVE_OPTION) {
+      try 
+      {
+        File f=chooser.getSelectedFile();
+        dokumentenAnzeigeModell.add(getZeichenAnzahl(f));
+        
+      } 
+      catch (Exception ex) 
+      {
+        Logger.getLogger(Auftragserstellung.class.getName()).log(Level.SEVERE, null, ex);
+      }
+    }
+  }//GEN-LAST:event_jButtonOpenDirActionPerformed
+  
+  // liefert die Anzahl der Zeichen aus einem .docx File.
+  private DokumentenAnzeige getZeichenAnzahl(File f) throws FileNotFoundException
+  {
+    
+    System.out.println(f.getAbsolutePath());
+    
+    Scanner sc=new Scanner(f);
+    StringBuilder sb=new StringBuilder();
+    int originalLineCount=0;
+    while(sc.hasNext())
+    {
+      String line = sc.nextLine();
+      System.out.println(line);
+      sb.append(" ").append(line);
+      originalLineCount++;
+    }
+    System.out.println(sb);
+    System.out.println(sb.length());
+    
+    String dokumentenBezeichnung=f.getName();
+    int characterCount=sb.length();
+    int lineCount=characterCount/55;
+    int wordCount=sb.toString().split(" ").length;
+    
+    System.out.println("dokumentenBezeichnung: "+dokumentenBezeichnung);
+    System.out.println("characterCount: "+characterCount);
+    System.out.println("lineCount: "+lineCount);
+    System.out.println("wordCount: "+wordCount);
+    
+    return new DokumentenAnzeige(dokumentenBezeichnung, originalLineCount, lineCount, wordCount, characterCount);
+  }
+  private int getLeichenAnzahl(File f) throws IOException
+  {
+    List<String> lines=getLines(f.getAbsolutePath());
+    
+    int counter=0;
+    for (String line : lines)
+    {
+      counter+=line.length();
+    }
+    
+    return counter;
+  }
+  private List<String> getLines(String path) throws IOException
+  {
+    List<String> lines;
+    final Path exampleFile = Paths.get(path);
+    System.out.println(path);
+    lines=Files.readAllLines(exampleFile);
+    
+    lines=lines.stream().peek(str->System.out.println(str)).collect(Collectors.toList());
+    for (String str : lines)
+    {
+      System.out.println(str);
+    }
+    return lines;
+  }
   public static void main(String args[])
   {
     /* Set the Nimbus look and feel */
@@ -717,6 +839,7 @@ public class Auftragserstellung extends javax.swing.JFrame
   private javax.swing.JButton jButton4;
   private javax.swing.JButton jButton5;
   private javax.swing.JButton jButton6;
+  private javax.swing.JButton jButtonOpenDir;
   private javax.swing.JCheckBox jCheckBox1;
   private javax.swing.JComboBox jComboBox1;
   private javax.swing.JComboBox jComboBox2;
@@ -748,6 +871,7 @@ public class Auftragserstellung extends javax.swing.JFrame
   private javax.swing.JPanel jPanel5;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JScrollPane jScrollPane3;
+  private javax.swing.JTable jTable;
   private javax.swing.JTextField jTextField1;
   private javax.swing.JTextField jTextField10;
   private javax.swing.JTextField jTextField11;

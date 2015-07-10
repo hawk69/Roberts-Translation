@@ -55,8 +55,8 @@ public class Database
     // jdbc:postgresql:database
     // jdbc:postgresql://host/database
     // jdbc:postgresql://host:port/database
- 
-    return ("jdbc:postgresql:" + (host != null ? ("//" + host) + (port != null ? ":" + port : "") + "/" : "") + database);
+    return "jdbc:postgresql://localhost:5432/NT";
+    // return ("jdbc:postgresql:" + (host != null ? ("//" + host) + (port != null ? ":" + port : "") + "/" : "") + database);
   }
   //loading the JDBC driver
   private void loadJdbcDriver ()
@@ -138,5 +138,9 @@ public class Database
       e.printStackTrace ();
       System.exit (1);
     }
+  }
+  public static void main(String[] args)
+  {
+    new Database();
   }
 }
