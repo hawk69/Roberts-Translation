@@ -65,7 +65,6 @@ public class Auftragserstellung extends javax.swing.JFrame
     } catch (IOException e)
     {
     }
-    this.dokumentenAnzeigeModell=new DokumentenAnzeigeModell();
     jTable.setModel(dokumentenAnzeigeModell);
   }
 
@@ -95,13 +94,13 @@ public class Auftragserstellung extends javax.swing.JFrame
     tlWörterzählen = new javax.swing.JLabel();
     cbWörterzählen = new javax.swing.JCheckBox();
     lZeichengesamt = new javax.swing.JLabel();
-    jTextField7 = new javax.swing.JTextField();
+    tfZeichenGesamt = new javax.swing.JTextField();
     lZeilenanzahl = new javax.swing.JLabel();
-    jTextField8 = new javax.swing.JTextField();
+    tfZeilenGesamt = new javax.swing.JTextField();
     lWörteranzahl = new javax.swing.JLabel();
-    jTextField9 = new javax.swing.JTextField();
+    tfWoerterGesamt = new javax.swing.JTextField();
     lSeitenzanzahl = new javax.swing.JLabel();
-    jTextField10 = new javax.swing.JTextField();
+    tfSeitenanzahlGesamt = new javax.swing.JTextField();
     lFertigstellung = new javax.swing.JLabel();
     jTextField11 = new javax.swing.JTextField();
     lKorrekturEN = new javax.swing.JLabel();
@@ -247,29 +246,29 @@ public class Auftragserstellung extends javax.swing.JFrame
     lZeichengesamt.setText("Zeichen gesamt:");
     pLeft.add(lZeichengesamt);
 
-    jTextField7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-    pLeft.add(jTextField7);
+    tfZeichenGesamt.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+    pLeft.add(tfZeichenGesamt);
 
     lZeilenanzahl.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
     lZeilenanzahl.setText("Zeilenanzahl:");
     pLeft.add(lZeilenanzahl);
 
-    jTextField8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-    pLeft.add(jTextField8);
+    tfZeilenGesamt.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+    pLeft.add(tfZeilenGesamt);
 
     lWörteranzahl.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
     lWörteranzahl.setText("Wörteranzahl:");
     pLeft.add(lWörteranzahl);
 
-    jTextField9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-    pLeft.add(jTextField9);
+    tfWoerterGesamt.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+    pLeft.add(tfWoerterGesamt);
 
     lSeitenzanzahl.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
     lSeitenzanzahl.setText("Seitenanzahl:");
     pLeft.add(lSeitenzanzahl);
 
-    jTextField10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-    pLeft.add(jTextField10);
+    tfSeitenanzahlGesamt.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+    pLeft.add(tfSeitenanzahlGesamt);
 
     lFertigstellung.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
     lFertigstellung.setText("Fertigstellung:");
@@ -722,7 +721,7 @@ public class Auftragserstellung extends javax.swing.JFrame
       {
         File f=chooser.getSelectedFile();
         dokumentenAnzeigeModell.add(getZeichenAnzahl(f));
-        
+        updateZahlen();
       } 
       catch (Exception ex) 
       {
@@ -730,6 +729,13 @@ public class Auftragserstellung extends javax.swing.JFrame
       }
     }
   }//GEN-LAST:event_jButtonOpenDirActionPerformed
+  
+  private void updateZahlen()
+  {
+    tfZeichenGesamt.setText(""+dokumentenAnzeigeModell.getCharacterCountGesamt());
+    tfZeilenGesamt.setText(""+dokumentenAnzeigeModell.getLineCountGesamt());
+    tfWoerterGesamt.setText(""+dokumentenAnzeigeModell.getWordCountGesamt());
+  }
   
   // liefert die Anzahl der Zeichen aus einem .docx File.
   private DokumentenAnzeige getZeichenAnzahl(File f) throws FileNotFoundException
@@ -873,7 +879,6 @@ public class Auftragserstellung extends javax.swing.JFrame
   private javax.swing.JScrollPane jScrollPane3;
   private javax.swing.JTable jTable;
   private javax.swing.JTextField jTextField1;
-  private javax.swing.JTextField jTextField10;
   private javax.swing.JTextField jTextField11;
   private javax.swing.JTextField jTextField12;
   private javax.swing.JTextField jTextField13;
@@ -888,9 +893,6 @@ public class Auftragserstellung extends javax.swing.JFrame
   private javax.swing.JTextField jTextField3;
   private javax.swing.JTextField jTextField4;
   private javax.swing.JTextField jTextField6;
-  private javax.swing.JTextField jTextField7;
-  private javax.swing.JTextField jTextField8;
-  private javax.swing.JTextField jTextField9;
   private javax.swing.JLabel lAuftragsnummer;
   private javax.swing.JLabel lAuftragsnummer2;
   private javax.swing.JLabel lAuftragsnummer3;
@@ -918,6 +920,10 @@ public class Auftragserstellung extends javax.swing.JFrame
   private javax.swing.JPanel pStunden;
   private javax.swing.JTextField tfAuftragsnummer;
   private javax.swing.JTextField tfBeginn;
+  private javax.swing.JTextField tfSeitenanzahlGesamt;
+  private javax.swing.JTextField tfWoerterGesamt;
+  private javax.swing.JTextField tfZeichenGesamt;
+  private javax.swing.JTextField tfZeilenGesamt;
   private javax.swing.JLabel tlWörterzählen;
   private javax.swing.JTabbedPane tpTabs;
   // End of variables declaration//GEN-END:variables

@@ -14,7 +14,8 @@ import javax.swing.table.AbstractTableModel;
  */
 public class DokumentenAnzeigeModell extends AbstractTableModel
 {
-
+  private int lineCountGesamt=0;
+  
   private String headder[] =
   {
     "Dokumenten-Bezeichnung", "Lines", "OriginalLines", "Wörter", "Zeichen"
@@ -24,13 +25,13 @@ public class DokumentenAnzeigeModell extends AbstractTableModel
 
   public DokumentenAnzeigeModell()
   {
-    list.add(new DokumentenAnzeige("asdf", 1, 1, 1, 1));
     System.out.println("DokumentenAnzeigeModell erstellt");
   }
   
   public void add(DokumentenAnzeige da)
   {
     list.add(da);
+    lineCountGesamt+=da.getLineCount();
     fireTableDataChanged();
   }
   
@@ -52,6 +53,31 @@ public class DokumentenAnzeigeModell extends AbstractTableModel
     return headder.length;
   }
 
+  public int getWordCountGesamt()
+  {
+    int wordCountGesamt=0;
+    for (DokumentenAnzeige da : list)
+    {
+      wordCountGesamt+=da.getWordCount();
+    }
+    return wordCountGesamt;
+  }
+
+  public int getCharacterCountGesamt()
+  {
+    int characterCountGesamt=0;
+    for (DokumentenAnzeige da : list)
+    {
+      characterCountGesamt+=da.getCharacterCount();
+    }
+    return characterCountGesamt;
+  }
+
+  public int getLineCountGesamt()
+  {
+    return lineCountGesamt;
+  }
+  
   @Override
   public Object getValueAt(int rowIndex, int columnIndex)
   {
